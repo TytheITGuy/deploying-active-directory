@@ -26,82 +26,78 @@ This project is a continuation of [Active Directory: Preparing Infrastructure In
 <h2>Project Walk-through:</h2>
 
 <p align="center">
-To start, in the DC (Domain Controller), bring up the Server Manager dashboard, if it's not up already: <br/>
-<img src="https://i.imgur.com/Hu1SI4S.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Here, click on "Add roles and features" > Next > Next > For server selection there should only be one to select: <br/>
-<img src="https://i.imgur.com/2aEzeqm.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Now, check "Active Directory Domain Services" > Click "Add Features":  <br/>
-<img src="https://i.imgur.com/pTu3pNB.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Select "Active Directory Domain Services" > Next > Next > Next > Now select "Restart the destination server automatically if required" and click "Install": <br/>
-<img src="https://i.imgur.com/7QIfWrO.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Next, I have to promote this machine as a DC by configuring it as a new forest as "mydomain.com" (this can be anything, mydomain.com is just easy to remember) So, to do this, I will click on the flag icon with the caution symbol, near the top-right of the Server Manager Dashboard and select "Promote this server to a domain controller":  <br/>
-<img src="https://i.imgur.com/tWUuLF7.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Then select "Add new forest" and in "Root domain name" I'll type "mydomain.com". Then "Next":  <br/>
-<img src="https://i.imgur.com/DIPlTd0.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Type in a password of your choosing on the next screen like so then hit "Next":  <br/>
-<img src="https://i.imgur.com/0mbmFsN.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Leave "Create DNS delegation" unchecked and click "Next". Hit "Next" until you reach this screen. On this screen, click "Install". The machine will restart after the installation:  <br/>
-<img src="https://i.imgur.com/WcmGn1w.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-It may take some time to restart, but once it does, sign back in using "mydomain.com\labuser" (if you're using the same names as me) as the username. Use the password you set for "labuser". Here we have to sign in as "mydomain.com\labuser" instead of just "labuser", because now we've promoted this machine to a DC and it needs to know the context of who we're siging in as (someone in the domain, or a local user). I want to sign in as a user on the domain, so I specify that with the leading "mydomain.com\" part at sign in:  <br/>
-<img src="https://i.imgur.com/R5UwW3a.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Now, we'll create an admin user. To do this, in the start search bar, search for "Active Directory Users and Computers":  <br/>
-<img src="https://i.imgur.com/ArS11GE.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Right click on "mydomain.com" and select "New" > "Organizational Unit" and name it EXACTLY "_EMPLOYEES" (In a future project we will run a script that uses this name to work). Do the same steps here to create an OU (Organizational Unit) named "_ADMINS":  <br/>
-<img src="https://i.imgur.com/LKndRfZ.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Next, create a new user in "_ADMINS" by right-clicking on "_ADMINS" > New > User and fill it out like so:  <br/>
-<img src="https://i.imgur.com/otH0WZ9.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Then, create a password and uncheck "User must change password at next logon" and check "Password never expires" (You probably wouldn't do this in real life, but we'll do it for this lab where nothing's really at stake):  <br/>
-<img src="https://i.imgur.com/Bl1TDNe.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Jane Doe is now apart of the "_ADMINS" OU, but isn't actually an admin. To make her an admin right-click on her name > Properties > Member Of > Add... > Enter "domain admins" > Check Names > OK > Apply > OK:  <br/>
-<img src="https://i.imgur.com/JNzV00w.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Now, we can log out of DC and log back in using Jane's credentials:  <br/>
-<img src="https://i.imgur.com/hTRt4PJ.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Once logged in, log into client-1 VM, if not already. Here I'll join this client to the domain by right-clicking the start menu > Systems > Rename this PC (advanced) > Change > Select "Domain" and enter "mydomain.com" and hit "OK":  <br/>
-<img src="https://i.imgur.com/Pj8kswj.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-It'll ask for an account with permission to join the domain. We can use our admin's credentials for Jane here. Then a pop up saying welcome to the domain will appear and the machine will try and restart:  <br/>
-<img src="https://i.imgur.com/vm5DhNE.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-After the restart, client-1 is now a member of the domain. To check, in the DC machine start seach bar, search for "Active Directory Users and Computers" > mydomain.com > Computers > client-1 should be listed:  <br/>
-<img src="https://i.imgur.com/jvU4PGD.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
-Now we can create another OU as we did before and name it "_CLIENTS". Then drag and drop client-1 from "computers" to "_CLIENTS":  <br/>
-<img src="https://i.imgur.com/wHqvwVL.png" height="80%" width="80%" alt="Setting Up in Azure"/>
-<br />
-<br />
+To start, in the DC (Domain Controller), bring up the Server Manager dashboard, if it's not up already: 
+
+![1- Log into Dc 1](https://github.com/user-attachments/assets/92e206ef-acf5-4424-be2f-d10a0d14bfaa)
+
+ <p align="center">
+Here, click on "Add roles and features" > Next > Next > For server selection there should only be one to select: 
+
+![2- Add Roles and Features](https://github.com/user-attachments/assets/2ceb9cc7-cd46-461a-86e8-8b1926268035)
+
+<p align="center">
+Now, check "Active Directory Domain Services" > Click "Add Features":  
+
+![3- Adding Active Directory](https://github.com/user-attachments/assets/c2440fd2-1489-4101-aebd-d0411664de13)
+
+<p align="center">
+Select "Active Directory Domain Services" > Next > Next > Next > Now select "Restart the destination server automatically if required" and click "Install": 
+
+![4- Active directory installing](https://github.com/user-attachments/assets/0a037dfc-f6a5-4722-be91-a320ac2011b0)
+
+<p align="center">
+Next, I have to promote this machine as a DC by configuring it as a new forest as "mydomain.com" (this can be anything, mydomain.com is just easy to remember) So, to do this, I will click on the flag icon with the caution symbol, near the top-right of the Server Manager Dashboard and select "Promote this server to a domain controller":  
+
+![5-setting up a forest](https://github.com/user-attachments/assets/a4edd960-5f71-4a32-a1b0-108fa6c79d4f)
+
+<p align="center">
+Then select "Add new forest" and in "Root domain name" I'll type "mydomain.com". Then "Next":  
+
+![6- adding a new forest](https://github.com/user-attachments/assets/d92f1548-728a-4df5-a0a2-f7e325bcb89f)
+
+<p align="center">
+ On this screen, click "Install". The machine will restart after the installation: 
+
+![7- adding a new forest part 2](https://github.com/user-attachments/assets/879a444b-2857-4c2b-9143-e03967707783)
+
+<p align="center">
+Now, we'll create an admin user. To do this, in the start search bar, search for "Active Directory Users and Computers": 
+
+![8- AD Users and Computers](https://github.com/user-attachments/assets/59f62724-87e7-42c6-8601-51bbe3440027)
+
+<p align="center">
+Right click on "mydomain.com" and select "New" > "Organizational Unit" and name it EXACTLY "_EMPLOYEES" (In a future project we will run a script that uses this name to work). Do the same steps here to create an OU (Organizational Unit) named "_ADMINS":  
+
+![9- Creating Employees](https://github.com/user-attachments/assets/5e71f2c5-db39-4fe1-983d-d35f8b5a7a94)
+
+![10- Creating Admins](https://github.com/user-attachments/assets/74916ee7-1ef1-41bc-b7bf-96fef6adb9cb)
+
+
+<p align="center">
+Next, create a new user in "_ADMINS" by right-clicking on "_ADMINS" > New > User and fill it out like so Jane is under admins: 
+
+![11- Jane the Admin](https://github.com/user-attachments/assets/88eac330-cf4d-4abd-8733-beb6f39106a8)
+
+<p align="center">
+Jane Doe is now apart of the "_ADMINS" OU, but isn't actually an admin. To make her an admin right-click on her name > Properties > Member Of > Add... > Enter "domain admins" > Check Names > OK > Apply > OK:  
+
+![12- Jane Dor Properties](https://github.com/user-attachments/assets/560f7d8f-4f69-4680-820d-9071dd53ff9a)
+
+<p align="center">
+Log back into client-1.  Here I'll join this client to the domain by right-clicking the start menu > Systems > Rename this PC (advanced) > Change > Select "Domain" and enter "mydomain.com" and hit "OK":  
+
+![15- Adding Client 1 to the domain](https://github.com/user-attachments/assets/3b95f1d6-836e-421f-9109-5e128e4ebd89)
+
+<p align="center">
+After the restart due to adding client-1, check in the DC machine start seach bar, search for "Active Directory Users and Computers" > mydomain.com > Computers > client-1 should be listed:  
+
+![17- Verifying Client 1 in domain](https://github.com/user-attachments/assets/9cb8329f-2bd1-4f50-b045-3b667877b741)
+
+<p align="center">
+Now we can create another OU as we did before and name it "_CLIENTS". Then drag and drop client-1 from "computers" to "_CLIENTS": 
+
+![18- Creating Clients OU](https://github.com/user-attachments/assets/dfffaed0-ff53-4b80-ae54-5a2695227ce4)
+
 
 <h2>Active Directory is Deployed and Ready for Use! </h2>
 
